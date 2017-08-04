@@ -1,77 +1,51 @@
 ﻿import QtQuick 2.9
+import Qt.labs.platform 1.0
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import Qt.labs.platform 1.0
 
 ApplicationWindow {
-    visible: true
+    id: window
     width: 1280
     height: 720
-    title: qsTr("Hello World")
+    visible: true
+    title: qsTr("Side Panel")
 
-    MainMenuBar { }
+    readonly property bool inPortrait: window.width < window.height
 
-//    header: MainToolBar { }
+    MainToolBar {
+        id: overlayHeader
+     }
 
-    Row {
-        id: contentRow
+    Drawer {
+        id: drawer
 
-        RowItem{
-            Rectangle {
-                width: 180; height: 200
+        y: overlayHeader.height
+        width: 300
+        height: window.height - overlayHeader.height
 
-                Component {
-                    id: contactDelegate
-                    Item {
-                        width: 180; height: 40
-                        Column {
-                            Text { text: '<b>Name:</b> ' + name }
-                            Text { text: '<b>Number:</b> ' + number }
-                        }
-                    }
-                }
+        modal: inPortrait
+        interactive: inPortrait
+        position: inPortrait ? 0 : 1
+        visible: !inPortrait
 
-                ListView {
-                    anchors.fill: parent
-                    model: DataListModel {}
-                    delegate: contactDelegate
-                    highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
-                    focus: true
-                }
-            }
-        }
-
-        RowItem {
-            SwipeView {
-                id: swipeView
-                anchors.fill: parent
-                currentIndex: tabBar.currentIndex
-
-                Page {
-                    Label {
-                        text: qsTr("First page")
-                        anchors.centerIn: parent
-                    }
-                }
-
-                Page {
-                    Label {
-                        text: qsTr("Second page")
-                        anchors.centerIn: parent
-                    }
-                }
-            }
-        }
+        DataListView { }
     }
 
-    footer: TabBar {
-        id: tabBar
-        currentIndex: swipeView.currentIndex
-        TabButton {
-            text: qsTr("First")
+    Flickable {
+        id: flickable
+
+        anchors.fill: parent
+        anchors.topMargin: overlayHeader.height
+        anchors.leftMargin: !inPortrait ? drawer.width : undefined
+
+        topMargin: 0
+        bottomMargin: 20
+        contentHeight: column.height
+
+        PlotTabArea {
+            id: column
         }
-        TabButton {
-            text: qsTr("Second")
-        }
+
+        ScrollIndicator.vertical: ScrollIndicator { }
     }
 }
