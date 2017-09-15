@@ -8,6 +8,7 @@ ListView {
     anchors.fill: parent
 
     headerPositioning: ListView.OverlayHeader
+
     header: Pane {
         id: header
         z: 2
@@ -37,10 +38,10 @@ ListView {
         }
     }
 
-    model: 10
+    model: dataList
 
     delegate: ItemDelegate {
-        text: qsTr("Title %1").arg(index + 1)
+        text: model.name
         width: parent.width
     }
 

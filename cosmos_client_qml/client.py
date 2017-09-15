@@ -1,11 +1,10 @@
-import six
-from zerorpc import Subscriber, Pusher, Client
-import logging
 import gevent
-
-from cosmoscope.core.spectra import Spectrum1D
+from zerorpc import Subscriber, Client
 
 from .hub import *
+
+
+# from cosmoscope.core.spectra import Spectrum1D
 
 
 class ClientAPI(Subscriber):

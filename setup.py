@@ -19,6 +19,6 @@ setup(
     author='Nicholas Earl',
     author_email='contact@nicholasearl.me',
     description='Front-end qt interface for interacting with the cosmoscope server',
-    # install_requires=["cosmoscope"],
-    entry_points=entry_points
+    entry_points=entry_points,
+    install_requires=['msgpack-python', 'zerorpc', 'gevent', 'qtawesome']
 )
