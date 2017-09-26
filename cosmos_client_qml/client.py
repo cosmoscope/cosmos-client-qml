@@ -1,19 +1,18 @@
+import logging
+
 import gevent
-from zerorpc import Subscriber, Client
+from zerorpc import Client, Subscriber
 
 from .hub import *
 
 
-# from cosmoscope.core.spectra import Spectrum1D
-
-
-class ClientAPI(Subscriber):
+class SubscriberAPI(Subscriber):
     def __init__(self, client_ip, *args, **kwargs):
-        super(ClientAPI, self).__init__(*args, **kwargs)
+        super(SubscriberAPI, self).__init__(*args, **kwargs)
 
         # Setup pusher
         self.client = Client()
-        self.client.bind(client_ip)
+        self.client.connect(client_ip)
 
         # Connect to message hub
         self._hub = Hub()
@@ -23,7 +22,7 @@ class ClientAPI(Subscriber):
     def data_loaded(self, data):
         import msgpack
 
-        unpacked_data = msgpack.unpackb(data, object_hook=Spectrum1D.decode)
+        unpacked_data = msgpack.unpackb(data)
 
         self._hub.publish(AddDataMessage, unpacked_data)
 
@@ -31,18 +30,21 @@ class ClientAPI(Subscriber):
         pass
 
 
-def start(server_ip=None, client_ip=None):
+def launch(server_ip=None, client_ip=None):
     logging.info("[client] Starting services...")
 
     server_ip = server_ip or "ipc://127.0.0.1:4242"
     client_ip = client_ip or "ipc://127.0.0.1:4243"
 
     # Setup the pull service
-    client = ClientAPI(client_ip)
-    client.connect(server_ip)
+    subscriber = SubscriberAPI(client_ip)
+    subscriber.connect(server_ip)
 
-    gevent.spawn(client.run)
+    gevent.spawn(subscriber.run)
 
     logging.info(
         "[client] Client is now sending on {} and listening on {}.".format(
             client_ip, server_ip))
+
+    # Attempt testing whether fuction was added to server object
+    subscriber.client.load_data_from_path('/home/nmearl/Downloads/Transcript.txt', '*')

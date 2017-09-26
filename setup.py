@@ -6,19 +6,19 @@ from setuptools import setup, find_packages
 
 entry_points = """
 [cosmoscope.plugin]
-qt=cosmos_client_qt.main:main
+qml=cosmos_client_qml:start
 """
 
 setup(
-    name='cosmos-client-qt',
+    name='cosmos-client-qml',
     version='0.1.0',
     packages=find_packages(),
     include_package_data=True,
-    url='https://github.com/cosmoscope/cosmos-client-qt',
+    url='https://github.com/cosmoscope/cosmos-client-qml',
     license='',
     author='Nicholas Earl',
     author_email='contact@nicholasearl.me',
-    description='Front-end qt interface for interacting with the cosmoscope server',
+    description='Front-end qml interface for interacting with the cosmoscope server',
     entry_points=entry_points,
     install_requires=['msgpack-python', 'zerorpc', 'gevent', 'qtawesome']
 )

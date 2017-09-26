@@ -1,0 +1,3 @@
+include cosmos_client_qml/qml/*.qml
+include cosmos_client_qml/qml/fonts/*.ttf
+include cosmos_client_qml/qml/images/*.png
