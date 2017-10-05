@@ -1,4 +1,6 @@
 import logging
+logging.basicConfig(level=logging.INFO)
+
 import os
 import sys
 
@@ -9,12 +11,11 @@ from PyQt5.QtWidgets import QApplication
 
 from .client import launch
 
-logging.basicConfig(level=logging.INFO)
 
-
-def start():
+def start(server_ip=None, client_ip=None):
     # Start the server connections
-    launch()
+    launch(server_ip=server_ip,
+           client_ip=client_ip)
 
     # Start the application
     app = QApplication(sys.argv)
