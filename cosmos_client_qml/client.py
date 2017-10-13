@@ -9,7 +9,7 @@ from .hub import *
 class SubscriberAPI():
     def __init__(self, client_ip):
         # Setup pusher service
-        self.client = Puller()
+        self.client = Client()
         self.client.connect(client_ip)
 
         # print(self.pusher.load_data("TEST"))
