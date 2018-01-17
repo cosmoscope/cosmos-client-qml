@@ -45,3 +45,9 @@ class AddDataMessage(Message):
 
 class LoadDataMessage(Message):
     pass
+
+class NewPlotMessage(Message):
+    pass
+
+class AddPlotDataMessage(Message):
+    pass

@@ -2,68 +2,74 @@ import QtQuick 2.9
 import Qt.labs.platform 1.0
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-//import QtCharts 2.2
+import QtCharts 2.2
 
-Column {
+ColumnLayout {
     spacing: 20
-    anchors.margins: 0
-    anchors.left: parent.left
-    anchors.right: parent.right
+
+    anchors.fill: parent
+    anchors.topMargin: overlayHeader.height
+    anchors.leftMargin: !inPortrait ? drawer.width : undefined
 
     TabBar {
         anchors.fill: parent
-        id: bar
+        id: tabListBar
 
-//        Repeater {
-//            model: plot_list
-//
-//            TabButton {
-//                text: name
-//            }
-//        }
+        Repeater {
+            model: PlotListModel { }
+
+            TabButton {
+                text: model.name
+            }
+        }
     }
 
     StackLayout {
-        width: parent.width
-        currentIndex: bar.currentIndex
+        id: stackLayout
+        currentIndex: tabListBar.currentIndex
 
-        Item {
-            id: homeTab
-            Rectangle {
-                anchors.fill: parent
-                color: "red"
+        Repeater {
+            model: PlotListModel { }
 
-//                ChartView {
-//                    title: "Line"
-//                    anchors.fill: parent
-//                    antialiasing: true
-//
-//                    LineSeries {
-//                        name: "LineSeries"
-//                        XYPoint { x: 0; y: 0 }
-//                        XYPoint { x: 1.1; y: 2.1 }
-//                        XYPoint { x: 1.9; y: 3.3 }
-//                        XYPoint { x: 2.1; y: 2.1 }
-//                        XYPoint { x: 2.9; y: 4.9 }
-//                        XYPoint { x: 3.4; y: 3.0 }
-//                        XYPoint { x: 4.1; y: 3.3 }
-//                    }
-//                }
-            }
-        }
-        Item {
-            id: discoverTab
-            Rectangle {
-                anchors.fill: parent
-                color: "green"
-            }
-        }
-        Item {
-            id: activityTab
+            Item {
+                ChartView {
+                    id: chartView
+                    anchors.fill: parent
+                    antialiasing: true
+                    legend.visible: false
+                    axes: [
+                        ValueAxis{
+                            id: xAxis
+                            min: 1.0
+                            max: 10.0
+                        },
+                        ValueAxis{
+                            id: yAxis
+                            min: 0
+                            max: 1
+                        }
+                    ]
 
-            Rectangle {
-                anchors.fill: parent
-                color: "blue"
+                    Component.onCompleted: {
+                        for (var i = 0; i < plotItems.count; i++)
+                        {
+                            var plotData = plotItems.get(i).plotData;
+
+                            var series = chartView.createSeries(ChartView.SeriesTypeLine, "line"+ i, xAxis, yAxis);
+        
+                            series.pointsVisible = true;
+                            series.color = Qt.rgba(Math.random(), Math.random(), Math.random(), 1);
+                            // series.hovered.connect(function(point, state){ console.log(point); }); // connect onHovered signal to a function
+
+                            for (var j = 0; j < plotData.count; j ++)
+                            {
+                                var x = plotData.get(j).x;
+                                var y = Math.random();//plotData.get(j).y;
+                                series.append(x, y);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -2,6 +2,7 @@
 import Qt.labs.platform 1.0
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import QtCharts 2.2
 
 ApplicationWindow {
     id: window
@@ -31,21 +32,8 @@ ApplicationWindow {
         DataListView { }
     }
 
-    Flickable {
-        id: flickable
+    PlotTabArea { }
 
-        anchors.fill: parent
-        anchors.topMargin: overlayHeader.height
-        anchors.leftMargin: !inPortrait ? drawer.width : undefined
-
-        topMargin: 0
-        bottomMargin: 20
-        contentHeight: column.height
-
-        PlotTabArea {
-            id: column
-        }
-
-        ScrollIndicator.vertical: ScrollIndicator { }
+    Component.onCompleted: {
     }
 }

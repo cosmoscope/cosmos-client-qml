@@ -4,7 +4,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
 ListView {
-    id: listView
+    id: dataListView
     anchors.fill: parent
 
     headerPositioning: ListView.OverlayHeader
@@ -22,7 +22,7 @@ ListView {
             parent: header
             width: parent.width
             anchors.verticalCenter: parent.bottom
-            visible: !listView.atYBeginning
+            visible: !dataListView.atYBeginning
         }
     }
 
@@ -38,12 +38,23 @@ ListView {
         }
     }
 
-    model: dataList
+    Component {
+        id: listDataDelegate
+        Rectangle {
+            id: wrapper
+            width: parent.width
+            height: contactInfo.height
+            color: dataListView.isCurrentItem ? "black" : "red"
 
-    delegate: ItemDelegate {
-        text: model.name
-        width: parent.width
+            Text {
+                id: contactInfo
+                text: model.name
+                color: wrapper.dataListView.isCurrentItem ? "red" : "black"
+            }
+        }
     }
+
+    delegate: listDataDelegate
 
     ScrollIndicator.vertical: ScrollIndicator { }
 }
