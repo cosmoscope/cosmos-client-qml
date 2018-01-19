@@ -22,7 +22,8 @@ FocusScope {
 
     Text {
         id: typeSomething
-        anchors.fill: parent; anchors.leftMargin: 8
+        anchors.fill: parent
+        anchors.leftMargin: 8
         verticalAlignment: Text.AlignVCenter
         text: "Type something..."
         color: "gray"
@@ -31,43 +32,74 @@ FocusScope {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: { focusScope.focus = true; textInput.openSoftwareInputPanel(); }
+        onClicked: { 
+            focusScope.focus = true
+            textInput.openSoftwareInputPanel
+        }
     }
 
     TextInput {
         id: textInput
-        anchors { left: parent.left; leftMargin: 8; right: clear.left; rightMargin: 8; verticalCenter: parent.verticalCenter }
+        anchors { 
+            left: parent.left
+            leftMargin: 8
+            right: clear.left
+            rightMargin: 8
+            verticalCenter: parent.verticalCenter 
+        }
         focus: true
         selectByMouse: true
     }
 
     Image {
         id: clear
-        width: 20; height: 20
-        anchors { right: parent.right; rightMargin: 8; verticalCenter: parent.verticalCenter }
+        width: 15; height: 15
+        anchors { 
+            right: parent.right
+            rightMargin: -20
+            verticalCenter: parent.verticalCenter 
+        }
         source: "images/clear.png"
         opacity: 0
 
         MouseArea {
             anchors.fill: parent
-            onClicked: { textInput.text = ''; focusScope.focus = true; textInput.openSoftwareInputPanel(); }
+            onClicked: { 
+                textInput.text = ''
+                focusScope.focus = true
+                textInput.openSoftwareInputPanel
+            }
         }
     }
 
     states: State {
-        name: "hasText"; when: textInput.text != ''
-        PropertyChanges { target: typeSomething; opacity: 0 }
-        PropertyChanges { target: clear; opacity: 1 }
+        name: "hasText"
+        when: textInput.text != ''
+        PropertyChanges { 
+            target: typeSomething
+            opacity: 0 
+        }
+        PropertyChanges { 
+            target: clear
+            opacity: 1 
+        }
     }
 
     transitions: [
         Transition {
-            from: ""; to: "hasText"
-            NumberAnimation { exclude: typeSomething; properties: "opacity" }
+            from: ""
+            to: "hasText"
+            NumberAnimation { 
+                exclude: typeSomething
+                properties: "opacity" 
+            }
         },
         Transition {
-            from: "hasText"; to: ""
-            NumberAnimation { properties: "opacity" }
+            from: "hasText"
+            to: ""
+            NumberAnimation { 
+                properties: "opacity" 
+            }
         }
     ]
 }

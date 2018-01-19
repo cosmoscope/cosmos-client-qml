@@ -9,9 +9,15 @@ ApplicationWindow {
     width: 1280
     height: 720
     visible: true
-    title: qsTr("Side Panel")
+    title: qsTr("Cosmoscope")
 
     readonly property bool inPortrait: window.width < window.height
+
+    property var model: PlotListModel { }
+
+    MainMenuBar {
+        id: mainMenuBar
+    }
 
     MainToolBar {
         id: overlayHeader
@@ -29,11 +35,36 @@ ApplicationWindow {
         position: inPortrait ? 0 : 1
         visible: !inPortrait
 
-        DataListView { }
+        background: Rectangle {
+            Rectangle {
+                x: parent.width - 1
+                width: 1
+                height: parent.height
+                color: "light grey"
+            }
+        }
+
+        DataListView {
+            id: dataListView
+            model: window.model.get(plotTabs.currentIndex) != undefined ? window.model.get(plotTabs.currentIndex).plotItems : null
+         }
     }
 
-    PlotTabArea { }
+    ColumnLayout {
+        spacing: 20
+        anchors.fill: parent
+        anchors.topMargin: overlayHeader.height
+        anchors.leftMargin: !inPortrait ? drawer.width : undefined
 
-    Component.onCompleted: {
+        PlotTabs { 
+            id: plotTabs
+            model: window.model
+        }
+
+        PlotArea {
+            id: plotArea
+            currentIndex: plotTabs.currentIndex
+            model: window.model
+        }
     }
 }

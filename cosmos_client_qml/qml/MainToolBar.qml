@@ -10,6 +10,10 @@ ToolBar {
     width: parent.width
     parent: window.overlay
 
+    ModelingDialog {
+        id: modelingDialog
+    }
+
     Flow {
         id: flow
         width: parent.width
@@ -19,16 +23,46 @@ ToolBar {
 
             ToolButton {
                 id: openButton
+            //    font.family: localFont.name
+               onClicked: modelingDialog.open()
+
+                contentItem: Image {
+                    sourceSize.width: 40
+                    sourceSize.height: 40
+                    fillMode: Image.Pad
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    source: "images/open.png"
+                }
+            }
+
+            ToolButton {
+                id: newButton
 //                font.family: localFont.name
 //                onClicked: openDialog.open()
 
                 contentItem: Image {
-                    sourceSize.width: 20
-                    sourceSize.height: 20
+                    sourceSize.width: 40
+                    sourceSize.height: 40
 //                    fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "images/select.png"
+                    source: "images/new.png"
+                }
+            }
+
+            ToolButton {
+                id: saveButton
+//                font.family: localFont.name
+//                onClicked: openDialog.open()
+
+                contentItem: Image {
+                    sourceSize.width: 40
+                    sourceSize.height: 40
+//                    fillMode: Image.Pad
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    source: "images/save.png"
                 }
             }
 
@@ -47,8 +81,8 @@ ToolBar {
 //                onClicked: textArea.copy()
 
                 contentItem: Image {
-                    sourceSize.width: 20
-                    sourceSize.height: 20
+                    sourceSize.width: 40
+                    sourceSize.height: 40
 //                    fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
@@ -74,8 +108,8 @@ ToolBar {
 //                onClicked: document.bold = !document.bold
 
                 contentItem: Image {
-                    sourceSize.width: 20
-                    sourceSize.height: 20
+                    sourceSize.width: 40
+                    sourceSize.height: 40
 //                    fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
@@ -100,8 +134,8 @@ ToolBar {
 //                onClicked: document.alignment = Qt.AlignLeft
 
                 contentItem: Image {
-                    sourceSize.width: 20
-                    sourceSize.height: 20
+                    sourceSize.width: 40
+                    sourceSize.height: 40
 //                    fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter

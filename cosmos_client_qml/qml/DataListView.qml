@@ -22,14 +22,18 @@ ListView {
             parent: header
             width: parent.width
             anchors.verticalCenter: parent.bottom
-            visible: !dataListView.atYBeginning
+            visible: !dataListView.atYEnding
         }
     }
 
-    footer: ItemDelegate {
+    Pane {
         id: footer
-        text: qsTr("Footer")
         width: parent.width
+        anchors.bottom: parent.bottom
+
+        Text {
+            text: "Here"
+        }
 
         MenuSeparator {
             parent: footer
@@ -38,23 +42,48 @@ ListView {
         }
     }
 
-    Component {
-        id: listDataDelegate
-        Rectangle {
-            id: wrapper
-            width: parent.width
-            height: contactInfo.height
-            color: dataListView.isCurrentItem ? "black" : "red"
+    delegate: ItemDelegate {
+        width: parent.width
+
+        highlighted: ListView.isCurrentItem
+
+        RowLayout {
+            anchors.fill: parent
+            anchors.leftMargin: 5
+
+            Rectangle {
+                anchors.left: parent.left
+                width: 20; height: 20
+                radius: width * 0.5
+                color: model.style.get(0).color
+            }
 
             Text {
-                id: contactInfo
+                id: itemText
+                Layout.fillWidth: true
                 text: model.name
-                color: wrapper.dataListView.isCurrentItem ? "red" : "black"
+                elide: Text.ElideRight
+            }
+
+            ToolButton {
+                id: itemToolButton
+                anchors.right: parent.right
+                text: qsTr("⋮")
+                font.pointSize: 20
+                onClicked: {
+                }
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            anchors.rightMargin: itemToolButton.width
+            onClicked: {
+                dataListView.currentIndex = index;
+                model.style.set(0, {'opacity': 1, 'color': 'purple'});
             }
         }
     }
-
-    delegate: listDataDelegate
 
     ScrollIndicator.vertical: ScrollIndicator { }
 }
