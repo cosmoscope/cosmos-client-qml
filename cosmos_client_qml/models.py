@@ -1,104 +1,61 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtCore import QAbstractListModel, QVariant, QModelIndex
+from PyQt5.QtCore import QAbstractListModel, QVariant, QModelIndex, pyqtProperty
 
-from .hub import Hub, AddDataMessage, NewPlotMessage, AddPlotDataMessage
+from .hub import Hub, Message
+from .items import TabItem
 
 
-class BaseListModel(QAbstractListModel):
+class DataItemModel(QAbstractListModel):
     def __init__(self, *args, **kwargs):
-        super(BaseListModel, self).__init__(*args, **kwargs)
+        super(DataItemModel, self).__init__(*args, **kwargs)
 
-        self._items = []
+        from .items import DataItem
+        import numpy as np
 
-    def appendRow(self, item, parent=QModelIndex(), first=None, last=1):
-        self.beginInsertRows(parent, first or self.rowCount(), last)
+        self._items = [
+            DataItem(name="My data 1", color="cyan", data=list(zip(np.arange(10), np.random.sample(10)))),
+            DataItem(name="My data 2", color="blue", data=list(zip(np.arange(10), np.random.sample(10))))
+        ]
 
-        self._items.append(item)
+        # Cache a reference to the currently selected item in the model
+        self._current_item = self._items[0]
 
-        self.endInsertRows()
+        # The data model needs to listen for add data events
+        self._hub = Hub()
+        # self._hub.subscribe(AddDataMessage, self.add_data, self)
+        # self._hub.subscribe(AddPlotDataMessage, self.add_data, self)
 
-    def removeRow(self, p_int, parent=QModelIndex(), *args, **kwargs):
-        self.beginRemoveRows(parent, p_int, p_int)
+    def roleNames(self):
+        return {
+            Qt.UserRole + 1: b'item'
+        }
 
-        self._items.pop(p_int)
-
-        self.endRemoveRows()
-
-    def removeRows(self, p_int, p_int_1, parent=QModelIndex(), *args, **kwargs):
-        self.beginRemoveRows(parent, p_int, p_int_1)
-
-        del self._items[p_int:p_int_1 + 1]
-
-        self.endRemoveRows()
-
-    def rowCount(self, parent=QModelIndex(), *args, **kwargs):
+    def rowCount(self, parent=QModelIndex()):
         return len(self._items)
 
-    def setData(self, index, value, *args, **kwargs):
-        if not index.isValid():
-            return False
-
-        if not 0 <= index.row() < self.rowCount():
-            self._items.append(value)
-        else:
-            self._items[index.row()] = value
-
-        return True
-
-    def data(self, index, role=Qt.DisplayRole):
-        if not index.isValid() or not 0 <= index.row() < self.rowCount():
-            return QVariant()
-
-        row = index.row()
-
-        return self._items[row][str(self.roleNames()[role], 'utf-8')]
+    def data(self, index, role):
+        if index.isValid():
+            return self._items[index.row()]
 
 
-class TabListModel(BaseListModel):
+class PlotTabModel(QAbstractListModel):
     def __init__(self, *args, **kwargs):
-        super(TabListModel, self).__init__(*args, **kwargs)
+        super(PlotTabModel, self).__init__(*args, **kwargs)
 
-        # The data model needs to listen for add data events
-        self._hub = Hub()
+        self._tabs = [
+            TabItem(DataItemModel(), "Tab 1"),
+            TabItem(DataItemModel(), "Tab 2")
+        ]
 
     def roleNames(self):
         return {
-            Qt.UserRole + 1: b'name',
-            Qt.UserRole + 2: b'value',
-            Qt.UserRole + 4: b'style'
+            Qt.UserRole + 1: b'tab'
         }
 
-    def add_data(self, data, row=None, parent=QModelIndex()):
-        self.beginInsertRows(parent, row or self.rowCount(), 1)
+    def rowCount(self, parent=QModelIndex()):
+        return len(self._tabs)
 
-        data_list_model = DataListModel()
-        data_list_model.add_data(data)
-
-        self._items.append(data_list_model)
-
-        self.endInsertRows()
-
-
-class DataListModel(BaseListModel):
-    def __init__(self, *args, **kwargs):
-        super(DataListModel, self).__init__(*args, **kwargs)
-
-        # The data model needs to listen for add data events
-        self._hub = Hub()
-        self._hub.subscribe(AddDataMessage, self.add_data, self)
-        self._hub.subscribe(AddPlotDataMessage, self.add_data, self)
-
-    def roleNames(self):
-        return {
-            Qt.UserRole + 1: b'name',
-            Qt.UserRole + 2: b'value',
-            Qt.UserRole + 3: b'units',
-            Qt.UserRole + 4: b'style'
-        }
-
-    def add_data(self, data, row=None, parent=QModelIndex()):
-        self.beginInsertRows(parent, row or self.rowCount(), 1)
-
-        self._items.append(data)
-
-        self.endInsertRows()
+    @pyqtProperty(TabItem)
+    def data(self, index, role):
+        if index.isValid():
+            return self._tabs[index.row()]

@@ -13,7 +13,7 @@ ApplicationWindow {
 
     readonly property bool inPortrait: window.width < window.height
 
-    property var model: PlotListModel { }
+    property var model: plotTabModel
 
     MainMenuBar {
         id: mainMenuBar
@@ -46,8 +46,14 @@ ApplicationWindow {
 
         DataListView {
             id: dataListView
-            model: window.model.get(plotTabs.currentIndex) != undefined ? window.model.get(plotTabs.currentIndex).plotItems : null
-         }
+            model: window.model.tab.data_item_model // != undefined ? window.model.get(plotTabs.currentIndex).plotItems : null
+
+            Component.onCompleted: {
+                console.log(window.model.data(0, 0));
+                console.log(window.model[plotTabs.currentIndex].tab);
+                console.log(window.model[plotTabs.currentIndex].tab.data_item_model);
+            }
+        }
     }
 
     ColumnLayout {

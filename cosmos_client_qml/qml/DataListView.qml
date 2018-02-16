@@ -55,13 +55,13 @@ ListView {
                 anchors.left: parent.left
                 width: 20; height: 20
                 radius: width * 0.5
-                color: model.style.get(0).color
+                color: model.item.color
             }
 
             Text {
                 id: itemText
                 Layout.fillWidth: true
-                text: model.name
+                text: model.item.name
                 elide: Text.ElideRight
             }
 
@@ -80,7 +80,8 @@ ListView {
             anchors.rightMargin: itemToolButton.width
             onClicked: {
                 dataListView.currentIndex = index;
-                model.style.set(0, {'opacity': 1, 'color': 'purple'});
+                hubProxy.item_selected(model.item);
+                // model.style.set(0, {'opacity': 1, 'color': 'purple'});
             }
         }
     }

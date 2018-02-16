@@ -3,7 +3,7 @@ import logging
 import gevent
 from zerorpc import Pusher, Subscriber, Client, Puller
 
-from .hub import *
+from .hub import Hub, Message
 
 
 class SubscriberAPI():
@@ -17,14 +17,14 @@ class SubscriberAPI():
         # Connect to message hub
         self._hub = Hub()
 
-        self._hub.subscribe(LoadDataMessage, self.client.load_data, self)
+        self._hub.subscribe(Message.LoadData, self.client.load_data, self)
 
     def data_loaded(self, data):
         import msgpack
 
         unpacked_data = msgpack.unpackb(data)
 
-        self._hub.publish(AddDataMessage, unpacked_data)
+        self._hub.publish(Message.AddData, unpacked_data)
 
     def data_unloaded(self, data):
         pass

@@ -1,6 +1,7 @@
 import six, abc
 import logging
 from collections import namedtuple
+from PyQt5.QtCore import QObject, pyqtSlot
 
 from .singletons import Singleton
 
@@ -32,22 +33,23 @@ class Hub:
         [rec.handler(*args) for rec in subs if rec.filter(message, publisher)]
 
 
-@six.add_metaclass(abc.ABCMeta)
+class HubProxy(QObject):
+    """
+    Proxy object to communicate between QML and python.
+    """
+    def __init__(self, *args, **kwargs):
+        super(HubProxy, self).__init__(*args, **kwargs)
+
+        self._hub = Hub()
+
+    @pyqtSlot(QObject)
+    def item_selected(self, item):
+        print("Clicked on item {}.".format(item.name))
+
+
 class Message:
-
-    @abc.abstractmethod
-    def __init__(self):
-        raise NotImplementedError
-
-
-class AddDataMessage(Message):
-    pass
-
-class LoadDataMessage(Message):
-    pass
-
-class NewPlotMessage(Message):
-    pass
-
-class AddPlotDataMessage(Message):
-    pass
+    AddData = None
+    LoadData = None
+    NewPlot = None
+    AddPlotData = None
+    CurrentItemChanged = None

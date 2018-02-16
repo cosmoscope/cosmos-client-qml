@@ -31,29 +31,30 @@ StackLayout {
                     }
                 ]
 
-                Component.onCompleted: {
-                    for (var i = 0; i < plotItems.count; i++)
-                    {
-                        var plotItem = plotItems.get(i);
-                        var plotData = plotItem.plotData;
+                // Component.onCompleted: {
+                //     for (var i = 0; i < model.data.count; i++)
+                //     {
+                //         var plotItem = model.data.get(i);
+                //         var plotData = plotItem.plotData;
 
-                        console.log(plotData);
+                //         console.log("Generating plot...");
+                //         console.log(plotData);
 
-                        var series = chartView.createSeries(ChartView.SeriesTypeLine, "line"+ i, xAxis, yAxis);
+                //         var series = chartView.createSeries(ChartView.SeriesTypeLine, "line"+ i, xAxis, yAxis);
     
-                        series.pointsVisible = true;
-                        series.color = plotItem.style.get(0).color;
-                        series.opacity = plotItem.style.get(0).opacity;
-                        // series.hovered.connect(function(point, state){ console.log(point); }); // connect onHovered signal to a function
+                //         series.pointsVisible = true;
+                //         series.color = plotItem.style.get(0).color;
+                //         series.opacity = plotItem.style.get(0).opacity;
+                //         // series.hovered.connect(function(point, state){ console.log(point); }); // connect onHovered signal to a function
 
-                        for (var j = 0; j < 10; j++)
-                        {
-                            var x = j + 1; // plotData.get(j).x;
-                            var y = Math.random(); // plotData.get(j).y;
-                            series.append(x, y);
-                        }
-                    }
-                }
+                //         for (var j = 0; j < 10; j++)
+                //         {
+                //             var x = j + 1; // plotData.get(j).x;
+                //             var y = Math.random(); // plotData.get(j).y;
+                //             series.append(x, y);
+                //         }
+                //     }
+                // }
             }
         }
     }
