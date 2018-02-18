@@ -6,11 +6,11 @@ from setuptools import setup, find_packages
 
 entry_points = """
 [cosmoscope.plugin]
-qml=cosmos_client_qml:start
+qml=qml_client:start
 """
 
 setup(
-    name='cosmos-client-qml',
+    name='qml-client',
     version='0.1.0',
     packages=find_packages(),
     include_package_data=True,
