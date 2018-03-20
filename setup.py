@@ -20,5 +20,5 @@ setup(
     author_email='contact@nicholasearl.me',
     description='Front-end qml interface for interacting with the cosmoscope server',
     entry_points=entry_points,
-    install_requires=['msgpack-python', 'zerorpc', 'gevent', 'qtawesome']
+    install_requires=['msgpack-python', 'zerorpc', 'gevent', 'qtawesome', 'astropy', 'docopt']
 )

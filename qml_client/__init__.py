@@ -15,7 +15,7 @@ from .client import launch
 
 from .hub import HubProxy
 from .components.data_items import DataItemModel
-from .components.plot_tabs import PlotTabModel
+from .components.plot_tabs import TabItemModel
 
 
 def start(server_ip=None, client_ip=None):
@@ -30,10 +30,10 @@ def start(server_ip=None, client_ip=None):
     rc = engine.rootContext()
 
     hub_proxy = HubProxy()
-    plot_tab_model = PlotTabModel()
+    tab_item_model = TabItemModel()
 
     rc.setContextProperty('hubProxy', hub_proxy)
-    rc.setContextProperty('plotTabModel', plot_tab_model)
+    rc.setContextProperty('plotTabModel', tab_item_model)
 
     engine.load(QUrl(
         os.path.abspath(os.path.join(os.path.dirname(__file__),

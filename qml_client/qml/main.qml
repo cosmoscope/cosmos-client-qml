@@ -46,12 +46,10 @@ ApplicationWindow {
 
         DataListView {
             id: dataListView
-            model: window.model.tab.data_item_model // != undefined ? window.model.get(plotTabs.currentIndex).plotItems : null
+            model: window.model.data(plotTabs.currentIndex).data_item_model // != undefined ? window.model.get(plotTabs.currentIndex).plotItems : null
 
             Component.onCompleted: {
-                console.log(window.model.data(0, 0));
-                console.log(window.model[plotTabs.currentIndex].tab);
-                console.log(window.model[plotTabs.currentIndex].tab.data_item_model);
+                console.log(window.model.data(plotTabs.currentInde).data_item_model);
             }
         }
     }

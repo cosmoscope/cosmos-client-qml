@@ -15,6 +15,7 @@ TabBar {
 
         TabButton {
             text: model.tab.name
+            
             RowLayout {
                 anchors.fill: parent
                 ToolButton {
@@ -23,14 +24,6 @@ TabBar {
                     font.pointSize: 20
                     onClicked: deletePlot(index)
                 }
-            }
-
-            Component.onCompleted: {
-                console.log('---');
-                console.log(model.tab);
-                console.log(model.tab.data_item_model);
-                console.log(model.tab.data_item_model.item);
-                console.log('===');
             }
         }
     }

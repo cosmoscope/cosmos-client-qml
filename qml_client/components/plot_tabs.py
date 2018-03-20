@@ -35,24 +35,27 @@ class TabItem(QObject):
         self._name = value
 
 
-class PlotTabModel(QAbstractListModel):
+class TabItemModel(QAbstractListModel):
+    TabRole = Qt.UserRole + 1
+
     def __init__(self, *args, **kwargs):
-        super(PlotTabModel, self).__init__(*args, **kwargs)
+        super(TabItemModel, self).__init__(*args, **kwargs)
 
         self._tabs = [
             TabItem(DataItemModel(), "Tab 1"),
-            TabItem(DataItemModel(), "Tab 2")
+            TabItem(DataItemModel(), "Tab 2"),
+            TabItem(DataItemModel(), "Tab 3")
         ]
 
     def roleNames(self):
         return {
-            Qt.UserRole + 1: b'tab'
+            self.TabRole: b'tab'
         }
 
     def rowCount(self, parent=QModelIndex()):
         return len(self._tabs)
 
-    @pyqtProperty(TabItem)
-    def data(self, index, role):
-        if index.isValid():
-            return self._tabs[index.row()]
+    def data(self, index, role=Qt.DisplayRole):
+        if role == Qt.DisplayRole:
+            pass
+        return self._tabs[index.row()]
