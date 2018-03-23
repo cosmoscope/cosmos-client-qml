@@ -7,55 +7,91 @@ import QtCharts 2.2
 StackLayout {
     currentIndex: tabListBar.currentIndex
 
-    property var model
-
     Repeater {
-        model: parent.model
+        id: plotItemRepeater
+        model: plotTabModel
 
-        Item {
+        Row {
+            property var itemModel: model.tab.data_item_model
+
+            Repeater {
+                id: dataItemRepeater
+                model: itemModel
+
+                Item {
+                    Connections {
+                        target: model.item
+
+                        onColorChanged: {
+                            chartView.renderPlots();
+                        }
+
+                        onVisibilityChanged: {
+                            chartView.renderPlots();
+                        }
+                    }
+                }
+            }
+
             ChartView {
                 id: chartView
                 anchors.fill: parent
                 antialiasing: true
                 legend.visible: false
-                axes: [
-                    ValueAxis{
-                        id: xAxis
-                        min: 1.0
-                        max: 10.0
-                    },
-                    ValueAxis{
-                        id: yAxis
-                        min: 0
-                        max: 1
+
+                ValueAxis {
+                    id: xAxis
+                    min: 0
+                    max: 10.0
+                }
+
+                ValueAxis {
+                    id: yAxis
+                    min: 0
+                    max: 1
+                }
+
+                Component.onCompleted: {
+                    renderPlots();
+                }
+
+                Connections {
+                    target: dataItemRepeater
+
+                    onItemAdded: {
+                        chartView.renderPlots();
+                     }
+
+                    onItemRemoved: {
+                        chartView.renderPlots();
                     }
-                ]
+                }
 
-                // Component.onCompleted: {
-                //     for (var i = 0; i < model.data.count; i++)
-                //     {
-                //         var plotItem = model.data.get(i);
-                //         var plotData = plotItem.plotData;
+                function renderPlots() {
+                    chartView.removeAllSeries();
 
-                //         console.log("Generating plot...");
-                //         console.log(plotData);
+                    var dataListCount = itemModel.rowCount()
 
-                //         var series = chartView.createSeries(ChartView.SeriesTypeLine, "line"+ i, xAxis, yAxis);
-    
-                //         series.pointsVisible = true;
-                //         series.color = plotItem.style.get(0).color;
-                //         series.opacity = plotItem.style.get(0).opacity;
-                //         // series.hovered.connect(function(point, state){ console.log(point); }); // connect onHovered signal to a function
+                    for (var i = 0; i < dataListCount; i++)
+                    {
+                        var dataItem = itemModel.at(i);
 
-                //         for (var j = 0; j < 10; j++)
-                //         {
-                //             var x = j + 1; // plotData.get(j).x;
-                //             var y = Math.random(); // plotData.get(j).y;
-                //             series.append(x, y);
-                //         }
-                //     }
-                // }
+                        if (!dataItem.visible) continue;
+
+                        var series = chartView.createSeries(ChartView.SeriesTypeLine, dataItem.name, xAxis, yAxis);
+                        series.pointsVisible = true;
+                        series.color = dataItem.color;
+                        series.hovered.connect(function(point, state){ console.log(point); }); // connect onHovered signal to a function
+
+                        for (var j = 0 ; j < dataItem.data.length; j++)
+                        {
+                            series.append(dataItem.x(j), dataItem.y(j));
+                        }
+                    }
+                }
             }
+
+            PlotToolBar { }
         }
     }
 }

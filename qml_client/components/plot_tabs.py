@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import (QObject, pyqtProperty, pyqtSignal,
                           QAbstractListModel, QVariant, QModelIndex,
-                          pyqtProperty)
+                          pyqtProperty, pyqtSlot)
 
 from ..hub import Hub, Message
 
@@ -58,4 +58,26 @@ class TabItemModel(QAbstractListModel):
     def data(self, index, role=Qt.DisplayRole):
         if role == Qt.DisplayRole:
             pass
-        return self._tabs[index.row()]
+        elif role == self.TabRole:
+            return self._tabs[index.row()]
+
+        return QVariant()
+
+    @pyqtSlot(int)
+    def removeRow(self, p_int, parent=QModelIndex(), *args, **kwargs):
+        self.beginRemoveRows(parent, p_int, p_int)
+        self._tabs.pop(p_int)
+        self.endRemoveRows()
+        
+        return True
+
+    def setData(self, index, value, *args, **kwargs):
+        if not index.isValid():
+            return False
+
+        if not 0 <= index.row() < self.rowCount():
+            self._tabs.append(value)
+        else:
+            self._tabs[index.row()] = value
+
+        return True

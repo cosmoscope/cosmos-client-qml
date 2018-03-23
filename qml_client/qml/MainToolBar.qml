@@ -27,12 +27,12 @@ ToolBar {
                onClicked: modelingDialog.open()
 
                 contentItem: Image {
-                    sourceSize.width: 40
-                    sourceSize.height: 40
+                    sourceSize.width: 30
+                    sourceSize.height: 30
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "images/open.png"
+                    source: "images/folder-7.svg"
                 }
             }
 
@@ -42,12 +42,12 @@ ToolBar {
 //                onClicked: openDialog.open()
 
                 contentItem: Image {
-                    sourceSize.width: 40
-                    sourceSize.height: 40
-//                    fillMode: Image.Pad
+                    sourceSize.width: 30
+                    sourceSize.height: 30
+                    fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "images/new.png"
+                    source: "images/save.svg"
                 }
             }
 
@@ -57,91 +57,94 @@ ToolBar {
 //                onClicked: openDialog.open()
 
                 contentItem: Image {
-                    sourceSize.width: 40
-                    sourceSize.height: 40
+                    sourceSize.width: 30
+                    sourceSize.height: 30
 //                    fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "images/save.png"
+                    source: "images/file.svg"
                 }
             }
 
             ToolSeparator {
-                contentItem.visible: fileRow.y === editRow.y
+                height: parent.height
+                contentItem.visible: true //fileRow.y === editRow.y
             }
         }
 
-        Row {
-            id: editRow
+//         Row {
+//             id: editRow
 
-            ToolButton {
-                id: copyButton
-                focusPolicy: Qt.TabFocus
-//                enabled: textArea.selectedText
-//                onClicked: textArea.copy()
+//             ToolButton {
+//                 id: copyButton
+//                 focusPolicy: Qt.TabFocus
+// //                enabled: textArea.selectedText
+// //                onClicked: textArea.copy()
 
-                contentItem: Image {
-                    sourceSize.width: 40
-                    sourceSize.height: 40
-//                    fillMode: Image.Pad
-                    horizontalAlignment: Image.AlignHCenter
-                    verticalAlignment: Image.AlignVCenter
-                    source: "images/select.png"
-                }
-            }
+//                 contentItem: Image {
+//                     sourceSize.width: 40
+//                     sourceSize.height: 40
+// //                    fillMode: Image.Pad
+//                     horizontalAlignment: Image.AlignHCenter
+//                     verticalAlignment: Image.AlignVCenter
+//                     source: "images/select.png"
+//                 }
+//             }
 
-            ToolSeparator {
-                contentItem.visible: editRow.y === formatRow.y
-            }
-        }
+//             ToolSeparator {
+//                 height: parent.height
+//                 contentItem.visible: editRow.y === formatRow.y
+//             }
+//         }
 
-        Row {
-            id: formatRow
+//         Row {
+//             id: formatRow
 
-            ToolButton {
-                id: boldButton
-//                text: "\uE800" // icon-bold
-//                font.family: localFont.name
-                focusPolicy: Qt.TabFocus
-                checkable: true
-//                checked: document.bold
-//                onClicked: document.bold = !document.bold
+//             ToolButton {
+//                 id: boldButton
+// //                text: "\uE800" // icon-bold
+// //                font.family: localFont.name
+//                 focusPolicy: Qt.TabFocus
+//                 checkable: true
+// //                checked: document.bold
+// //                onClicked: document.bold = !document.bold
 
-                contentItem: Image {
-                    sourceSize.width: 40
-                    sourceSize.height: 40
-//                    fillMode: Image.Pad
-                    horizontalAlignment: Image.AlignHCenter
-                    verticalAlignment: Image.AlignVCenter
-                    source: "images/select.png"
-                }
-            }
+//                 contentItem: Image {
+//                     sourceSize.width: 40
+//                     sourceSize.height: 40
+// //                    fillMode: Image.Pad
+//                     horizontalAlignment: Image.AlignHCenter
+//                     verticalAlignment: Image.AlignVCenter
+//                     source: "images/select.png"
+//                 }
+//             }
 
-            ToolSeparator {
-                contentItem.visible: formatRow.y === alignRow.y
-            }
-        }
+//             ToolSeparator {
+//                 height: parent.height
+//                 contentItem.visible: formatRow.y === alignRow.y
+//             }
+//         }
 
-        Row {
-            id: alignRow
+//         Row {
+//             id: alignRow
 
-            ToolButton {
-                id: alignLeftButton
-//                font.family: localFont.name
-                focusPolicy: Qt.TabFocus
-                checkable: true
-//                checked: document.alignment == Qt.AlignLeft
-//                onClicked: document.alignment = Qt.AlignLeft
+//             ToolButton {
+//                 id: alignLeftButton
+// //                font.family: localFont.name
+//                 focusPolicy: Qt.TabFocus
+//                 checkable: true
+// //                checked: document.alignment == Qt.AlignLeft
+// //                onClicked: document.alignment = Qt.AlignLeft
 
-                contentItem: Image {
-                    sourceSize.width: 40
-                    sourceSize.height: 40
-//                    fillMode: Image.Pad
-                    horizontalAlignment: Image.AlignHCenter
-                    verticalAlignment: Image.AlignVCenter
-                    source: "images/select.png"
-                }
-            }
-        }
+//                 contentItem: Image {
+//                     sourceSize.width: 40
+//                     sourceSize.height: 40
+// //                    fillMode: Image.Pad
+//                     horizontalAlignment: Image.AlignHCenter
+//                     verticalAlignment: Image.AlignVCenter
+//                     source: "images/select.png"
+//                 }
+//             }
+        // }
     }
 }

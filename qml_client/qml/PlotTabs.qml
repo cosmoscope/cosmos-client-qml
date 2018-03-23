@@ -4,33 +4,50 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
 TabBar {
-    id: plotTabs
     anchors.fill: parent
 
-    property var model
+    property var itemModel
 
     Repeater {
         id: plotTabsRepeater
-        model: plotTabs.model
+        model: plotTabModel
 
         TabButton {
             text: model.tab.name
-            
-            RowLayout {
-                anchors.fill: parent
-                ToolButton {
-                    anchors.right: parent.right
+
+            property var itemModel: model.tab.data_item_model
+
+            ToolButton {
+                id: closeButton
+                height: parent.height
+                width: parent.height
+                anchors.right: parent.right
+
+                contentItem: Text {
                     text: qsTr("×")
                     font.pointSize: 20
-                    onClicked: deletePlot(index)
+
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
                 }
+
+                background: Rectangle {
+                    height: parent.height
+                    color: closeButton.down ? "#d6d6d6" : "transparent"
+                }
+
+                onClicked: deletePlot(index)
             }
         }
+    }
+
+    onCurrentIndexChanged: {
+        itemModel = plotTabsRepeater.itemAt(currentIndex).itemModel;
     }
 
     function deletePlot(index) {
         // Select the next tab
         incrementCurrentIndex();
-        model.remove(index, 1);
+        plotTabsRepeater.model.removeRow(index);
     }
 }

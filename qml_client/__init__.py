@@ -14,7 +14,7 @@ from PyQt5.QtQml import qmlRegisterType
 from .client import launch
 
 from .hub import HubProxy
-from .components.data_items import DataItemModel
+from .components.data_items import DataItemModel, DataItem
 from .components.plot_tabs import TabItemModel
 
 
@@ -22,7 +22,7 @@ def start(server_ip=None, client_ip=None):
     # Start the server connections
     launch(server_ip=server_ip,
            client_ip=client_ip)
-    
+
     # Start the application
     app = QApplication(sys.argv)
     engine = QQmlApplicationEngine(parent=app)

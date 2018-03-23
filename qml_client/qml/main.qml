@@ -13,8 +13,6 @@ ApplicationWindow {
 
     readonly property bool inPortrait: window.width < window.height
 
-    property var model: plotTabModel
-
     MainMenuBar {
         id: mainMenuBar
     }
@@ -46,10 +44,17 @@ ApplicationWindow {
 
         DataListView {
             id: dataListView
-            model: window.model.data(plotTabs.currentIndex).data_item_model // != undefined ? window.model.get(plotTabs.currentIndex).plotItems : null
 
             Component.onCompleted: {
-                console.log(window.model.data(plotTabs.currentInde).data_item_model);
+                dataListView.model = plotTabs.itemModel
+            }
+
+            Connections {
+                target: plotTabs
+
+                onCurrentIndexChanged: {
+                    dataListView.model = plotTabs.itemModel
+                }
             }
         }
     }
@@ -60,15 +65,13 @@ ApplicationWindow {
         anchors.topMargin: overlayHeader.height
         anchors.leftMargin: !inPortrait ? drawer.width : undefined
 
-        PlotTabs { 
+        PlotTabs {
             id: plotTabs
-            model: window.model
         }
 
         PlotArea {
             id: plotArea
             currentIndex: plotTabs.currentIndex
-            model: window.model
         }
     }
 }

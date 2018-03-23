@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import Qt.labs.platform 1.0
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
 ListView {
@@ -14,7 +14,7 @@ ListView {
         z: 2
         width: parent.width
 
-        contentHeight: 25
+        contentHeight: 18
 
         SearchBar { }
 
@@ -52,10 +52,19 @@ ListView {
             anchors.leftMargin: 5
 
             Rectangle {
+                id: itemColorIcon
                 anchors.left: parent.left
                 width: 20; height: 20
                 radius: width * 0.5
                 color: model.item.color
+
+                Connections {
+                    target: model.item
+
+                    onColorChanged: {
+                        itemColorIcon.color = model.item.color;
+                    }
+                }
             }
 
             Text {
@@ -68,10 +77,64 @@ ListView {
             ToolButton {
                 id: itemToolButton
                 anchors.right: parent.right
+                width: 20
+
                 text: qsTr("⋮")
                 font.pointSize: 20
-                onClicked: {
+
+                background: Rectangle {
+                    color: itemToolButton.down ? "#d6d6d6" : "transparent"
                 }
+
+                onClicked: itemContextMenu.popup()
+            }
+        }
+
+        Menu {
+            id: itemContextMenu
+
+            Action {
+                text: "Visible"
+                checkable: true
+                checked: true
+
+                onToggled: {
+                    model.item.visible = checked;
+                    model.item.visibilityChanged(checked);
+                }
+            }
+            Action {
+                text: "Change Color"
+                onTriggered: colorDialog.open()
+            }
+
+            ColorDialog {
+                id: colorDialog
+                title: "Please choose a color"
+
+                onAccepted: {
+                    model.item.color = colorDialog.color;
+                    model.item.colorChanged(colorDialog.color);
+                }
+
+                onRejected: {
+                    console.log("Canceled")
+                }
+            }
+
+            MenuSeparator { }
+
+            Action {
+                text: "Delete"
+
+                onTriggered: dataListView.model.removeRow(currentIndex)
+            }
+
+            Menu {
+                title: "Find/Replace"
+                Action { text: "Find Next" }
+                Action { text: "Find Previous" }
+                Action { text: "Replace" }
             }
         }
 
@@ -80,8 +143,6 @@ ListView {
             anchors.rightMargin: itemToolButton.width
             onClicked: {
                 dataListView.currentIndex = index;
-                hubProxy.item_selected(model.item);
-                // model.style.set(0, {'opacity': 1, 'color': 'purple'});
             }
         }
     }
