@@ -4,8 +4,6 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
 TabBar {
-    anchors.fill: parent
-
     property var itemModel
 
     Repeater {

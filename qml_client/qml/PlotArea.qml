@@ -11,7 +11,9 @@ StackLayout {
         id: plotItemRepeater
         model: plotTabModel
 
-        Row {
+        Item {
+            anchors.fill: parent
+
             property var itemModel: model.tab.data_item_model
 
             Repeater {
@@ -90,8 +92,6 @@ StackLayout {
                     }
                 }
             }
-
-            PlotToolBar { }
         }
     }
 }

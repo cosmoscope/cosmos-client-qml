@@ -19,7 +19,7 @@ ApplicationWindow {
 
     MainToolBar {
         id: overlayHeader
-     }
+    }
 
     Drawer {
         id: drawer
@@ -60,18 +60,27 @@ ApplicationWindow {
     }
 
     ColumnLayout {
-        spacing: 20
         anchors.fill: parent
         anchors.topMargin: overlayHeader.height
         anchors.leftMargin: !inPortrait ? drawer.width : undefined
 
         PlotTabs {
             id: plotTabs
+            Layout.fillWidth: true
         }
 
-        PlotArea {
-            id: plotArea
-            currentIndex: plotTabs.currentIndex
+        RowLayout {
+            spacing: 10
+
+            PlotArea {
+                id: plotArea
+                currentIndex: plotTabs.currentIndex
+            }
+
+            PlotToolBar {
+                id: plotToolBar
+                Layout.fillHeight: true
+            }
         }
     }
 }
